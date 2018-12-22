@@ -1,0 +1,1 @@
+# shelter-rgb-strip
