@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>RGB LED strip control</title>
+    <script src="jscolor/jscolor.js"></script>
+</head>
+<body>
+    <div style="text-align: center">
+        <H2>RGB LED Strip color:</H2>
+        <input class="jscolor {onFineChange:'update(this)'}" value="cc66ff">
+
+        <div 
+            id="rect"
+            style="border:1px solid gray; width:1280px; height:768px; margin: 0 auto"></div>
+    </div>
+
+    <script>
+        var socket_is_active = false;
+
+        var socket = new WebSocket("ws://192.168.1.200:8266");
+        
+        socket.onopen = function() {
+            socket_is_active = true;
+            document.title = "CONNECTION ESTABLISHED";
+        }
+
+        socket.onerror = function(error)
+        {
+            socket_is_active = false;
+            document.title = "CONNECTION FAILED";
+        }
+
+        socket.onclose = function(event)
+        {
+            document.title = "CONNECTION CLOSED";
+        }
+
+        function update(picker) {
+            document.getElementById('rect').style.backgroundColor = '#' + picker;
+
+            if (socket_is_active)
+            {
+                socket.send(
+                    Math.round(picker.rgb[0]) + " " + // red
+                    Math.round(picker.rgb[1]) + " " + // green
+                    Math.round(picker.rgb[2]) +       // blue
+                    " 0"                              // brightness shift
+                );
+            }
+        }
+    </script>
+</body>
+
+</html>

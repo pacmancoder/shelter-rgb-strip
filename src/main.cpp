@@ -4,6 +4,8 @@
 #include <array>
 #include <iostream>
 #include <sstream>
+#include <cmath>
+#include <algorithm>
 
 namespace
 {
@@ -27,7 +29,16 @@ namespace
             return 0;
         }
 
-        return 255 - input;
+        auto unit_value = static_cast<float>(input) / 255;
+        // x = x^4
+        unit_value = unit_value * unit_value * unit_value * unit_value;
+        
+        auto output = std::min(
+            static_cast<uint8_t>(unit_value * 255),
+            static_cast<uint8_t>(255)
+        );
+
+        return 255 - output;
     }
 
     mgos_pwm_rgb_led rgb_strip = {};
