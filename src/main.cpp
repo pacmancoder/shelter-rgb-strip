@@ -1,13 +1,15 @@
-#include <array>
-
 #include <mgos.h>
+#include <mgos_pwm_rgb_led.h>
+
+#include <array>
+#include <iostream>
+#include <sstream>
 
 namespace
 {
     using GpioPinId = int;
 
-    // Inversed signaling
-    const bool PIN_VALUE_COLOR_ENABLE = false;
+    /// Inversed signaling
     const bool PIN_VALUE_COLOR_DISABLE = true;
 
     const GpioPinId PIN_RED = 14;
@@ -16,20 +18,85 @@ namespace
 
     const std::array<GpioPinId, 3> RGB_STRIP_PINS = { PIN_RED, PIN_GREEN, PIN_BLUE };
 
-    int COLOR_SWITCH_INTERVAL_MS = 100;
 
-    extern "C" void on_color_switch(void*)
+    /// Inversed signaling
+    uint8_t make_led_value(uint32_t input)
     {
-        static int i = 0;
-
-        for(auto pin : RGB_STRIP_PINS)
+        if (input >= 255)
         {
-            mgos_gpio_write(pin, PIN_VALUE_COLOR_DISABLE);
+            return 0;
         }
 
-        mgos_gpio_write(RGB_STRIP_PINS[i % RGB_STRIP_PINS.size()], PIN_VALUE_COLOR_ENABLE);
+        return 255 - input;
+    }
 
-        ++i;
+    mgos_pwm_rgb_led rgb_strip = {};
+    mg_connection* current_connection = nullptr;
+
+    extern "C" void on_network_event(mg_connection*, int event, void* event_data, void*)
+    {
+        switch(event)
+        {
+            case MG_EV_WEBSOCKET_FRAME:
+            {
+                const auto* message = reinterpret_cast<const websocket_message*>(event_data);
+
+                if ((message->flags & 0x0F) != WEBSOCKET_OP_TEXT || message->size == 0)
+                {
+                    return;
+                }
+
+                std::istringstream stream(std::string(
+                    reinterpret_cast<const char*>(message->data), 
+                    reinterpret_cast<const char*>(message->data + message->size)
+                ));
+                
+                uint32_t r = 0, g = 0, b = 0, w = 0;
+                stream >> r >> g >> b >> w;
+
+                mgos_pwm_rgb_led_set(
+                    &rgb_strip,
+                    make_led_value(r),
+                    make_led_value(g),
+                    make_led_value(b),
+                    make_led_value(w)
+                );
+
+                return;
+            }
+        }
+    }
+
+    extern "C" void on_network_connection_event(int event, void* event_data, void*)
+    {
+        mgos_net_event_data* net_event_data = reinterpret_cast<mgos_net_event_data*>(event_data);
+
+        switch(event)
+        {
+            case MGOS_NET_EV_DISCONNECTED:
+            {
+                std::cout << "[!] Network disconnected" << std::endl;
+
+                current_connection = nullptr;
+
+                return;
+            }
+            
+            case MGOS_NET_EV_IP_ACQUIRED:
+            {
+                const size_t MAX_IP_ADDR_STR_SIZE = 16;
+
+                char ip_str[MAX_IP_ADDR_STR_SIZE] = {};
+                mgos_net_ip_to_str(&net_event_data->ip_info.ip, ip_str);
+
+                std::cout << "[!] Network connected! IP: " << ip_str << std::endl;
+
+                current_connection =  mg_bind(mgos_get_mgr(), ":8266", on_network_event, nullptr);
+                mg_set_protocol_http_websocket(current_connection);
+
+                return;
+            }
+        }
     }
 }
 
@@ -41,7 +108,22 @@ extern "C" mgos_app_init_result mgos_app_init()
         mgos_gpio_set_mode(pin, MGOS_GPIO_MODE_OUTPUT);
     }
     
-    mgos_set_timer(COLOR_SWITCH_INTERVAL_MS, MGOS_TIMER_REPEAT, on_color_switch, nullptr); 
+    mgos_pwm_rgb_led_init(
+        &rgb_strip,
+        PIN_RED,
+        PIN_GREEN,
+        PIN_BLUE
+    );
+
+    mgos_pwm_rgb_led_set(
+        &rgb_strip,
+        make_led_value(0),
+        make_led_value(0),
+        make_led_value(0),
+        make_led_value(0)
+    );
+
+    mgos_event_add_group_handler(MGOS_EVENT_GRP_NET, on_network_connection_event, nullptr);
 
     return MGOS_APP_INIT_SUCCESS;
 }
