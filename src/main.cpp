@@ -14,8 +14,8 @@ namespace
     /// Inversed signaling
     const bool PIN_VALUE_COLOR_DISABLE = true;
 
-    const GpioPinId PIN_RED = 14;
-    const GpioPinId PIN_GREEN = 12;
+    const GpioPinId PIN_RED = 12;
+    const GpioPinId PIN_GREEN = 14;
     const GpioPinId PIN_BLUE = 13;
 
     const std::array<GpioPinId, 3> RGB_STRIP_PINS = { PIN_RED, PIN_GREEN, PIN_BLUE };
