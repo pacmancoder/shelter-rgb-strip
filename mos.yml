@@ -12,7 +12,9 @@ sources:
   - src
 
 config_schema:
-  - ["wifi.ap.enable", false]
+  - ["wifi.ap.ssid", "sta_config_??????"]
+  - ["wifi.ap.pass", "nopassword"]
+  - ["wifi.ap.channel", 5]
 
 tags:
   - cpp
@@ -31,3 +33,6 @@ libs:
   - origin: https://github.com/mongoose-os-libs/rpc-service-config
 
   - origin: https://github.com/mongoose-os-libs/pwm
+
+  - origin: https://github.com/pacmancoder/mg-wifi-web-config
+    version: master
