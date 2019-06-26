@@ -107,14 +107,17 @@ extern "C" void app_main()
 
     int step = 0;
     double brightness;
-    while (true)
+    for(;;)
     {
-        brightness = std::abs((((step) % 256) - 128) / 128.0) / 4;
-        auto color = hsv2rgb(hsv{ double(step % 360), 1.0, brightness });
+        brightness = std::abs((((step) % 256) - 128) / 128.0);
+        auto color = hsv2rgb(hsv{ double(step % 360), 1.0, brightness / 16 });
 
         pwm_set_duty(0, static_cast<uint32_t>(PWM_PERIOD * color.r));
         pwm_set_duty(1, static_cast<uint32_t>(PWM_PERIOD * color.g));
         pwm_set_duty(2, static_cast<uint32_t>(PWM_PERIOD * color.b));
+        //pwm_set_duty(0, static_cast<uint32_t>(PWM_PERIOD * brightness));
+        //pwm_set_duty(1, static_cast<uint32_t>(PWM_PERIOD * brightness));
+        //pwm_set_duty(2, static_cast<uint32_t>(PWM_PERIOD * brightness));
         pwm_start();
 
         ++step;
