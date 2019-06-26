@@ -4,18 +4,60 @@
 
 namespace Colors
 {
-    enum class RgbModel
+    // >>> COLOR MODEL VARIANTS
+
+    enum class RgbVariant
     {
-        Bit24
+        // 8 bit per channel (0 .. 255)
+        Int24Bit,
+        // Normalized float value per channel (0 .. 1.0)
+        FloatNormalized
     };
 
-    template <RgbModel model>
+    enum class HsvVariant
+    {
+        // Normalized float value per channel (0 .. 1.0)
+        FloatNormalized
+    };
+
+    // >>> COLOR MODELS <<<
+
+    template <RgbVariant>
     struct Rgb {};
 
-    struct Rgb<RgbModel::Int24Bit>
+    template<HsvVariant>
+    struct Hsv {};
+
+    // >>> SPECIALIZATIONS <<<
+
+    template<>
+    struct Rgb<RgbVariant::Int24Bit>
     {
-        uin32_t r, g, b;
+        uint8_t r, g, b;
     };
 
-    using Rgb24 = Rgb<uint8_t>;
+    template<>
+    struct Rgb<RgbVariant::FloatNormalized>
+    {
+        float r, g, b;
+
+        explicit operator Rgb<RgbVariant::Int24Bit>();
+    };
+
+    template<>
+    struct Hsv<HsvVariant::FloatNormalized>
+    {
+        float h, s, v;
+
+        explicit operator Rgb<RgbVariant::FloatNormalized>();
+        explicit operator Rgb<RgbVariant::Int24Bit>();
+    };
+
+    // >>> ALIASES <<<
+
+    using RgbInt24Bit = Rgb<RgbVariant::Int24Bit>;
+    using RgbFloatNormalized = Rgb<RgbVariant::FloatNormalized>;
+
+    using HsvFloatNormalized = Hsv<HsvVariant::FloatNormalized>;
+
 }

@@ -1,9 +1,11 @@
-project(colors)
-
-add_library(${PROJECT_NAME} STATIC "")
-
-
-
-target_sources(${PROJECT_NAME}
-
+set(
+    COMPONENT_SRCS
+    src/ColorModels.cpp
 )
+
+set(
+    COMPONENT_ADD_INCLUDEDIRS
+    include
+)
+
+register_component()
