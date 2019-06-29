@@ -6,13 +6,17 @@ set(CMAKE_CXX_STANDARD 14)
 set(
     EXTRA_COMPONENT_DIRS
     # Third party library components
-        src/libexl/exl-component
-    # Core platform-agnostic components
-    src/colors
-    src/model
-    # ESP-specific components
-    src/idf-components/bootstrapper
+    src/libexl/exl-component
+    # Universal components
+    src/unithread
+    # Core components
+    src/unicorn-hal
+    src/unicorn-colors
+    src/unicorn-model
+    src/unicorn-core
+    src/unicorn-bootstrap
 )
+
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
 project(shelter_rgb_strip)

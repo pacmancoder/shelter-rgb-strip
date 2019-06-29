@@ -5,7 +5,8 @@ set(
 
 set(
     COMPONENT_REQUIRES
-    colors
+    unicorn-core
+    unicorn-hal
 )
 
 register_component()

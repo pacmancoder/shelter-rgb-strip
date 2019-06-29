@@ -1,18 +1,18 @@
 #pragma once
 
-#include <model/IColorSampleProvider.hpp>
+#include <model/color_sample_provider.hpp>
 
-namespace Model
+namespace Unicorn { namespace Core
 {
     /// Represents color sample provider which always produces the same color
-    class StaticColorSampleProvider : IColorSampleProvider
+    class StaticColorSampleProvider : public Model::IColorSampleProvider
     {
     public:
         /// Constructs new StaticColorSampleProvider instance
         explicit StaticColorSampleProvider(ColorSample sample);
 
     public:
-        ColorSamplingResult NextSample() override;
+        SamplingResult NextSample() override;
         void Process(unsigned int deltaMs) override;
 
     public:
@@ -22,4 +22,4 @@ namespace Model
     private:
         ColorSample sample_;
     };
-}
+}}

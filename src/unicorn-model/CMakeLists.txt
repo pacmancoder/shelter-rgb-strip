@@ -1,6 +1,6 @@
 set(
     COMPONENT_SRCS
-    src/StaticColorSampleProvider.cpp
+    src/error.cpp
 )
 
 set(
@@ -11,7 +11,7 @@ set(
 set(
     COMPONENT_REQUIRES
     exl-component
-    colors
+    unicorn-colors
 )
 
 
