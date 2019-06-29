@@ -26,6 +26,8 @@ namespace Unicorn { namespace Core
         void Start();
         void Stop();
 
+        void SetBrightness(uint8_t brightness);
+
     private:
         void OnThreadExecute();
 
@@ -37,5 +39,6 @@ namespace Unicorn { namespace Core
         Unithread::Thread thread_;
         Unithread::Mutex threadMutex_;
         std::atomic_bool continueWork_;
+        std::atomic_uint_fast8_t brightness_;
     };
 }}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <cstdint>
 
 #include <exl/option.hpp>
 
@@ -21,7 +22,7 @@ namespace Unicorn { namespace Model
         /// Returns current color sample
         virtual SamplingResult NextSample() = 0;
         /// Performs generator processing actions
-        virtual void Process(unsigned int deltaMs) = 0;
+        virtual void Process(uint32_t deltaMs) = 0;
 
     public:
         virtual ~IColorSampleProvider() = default;

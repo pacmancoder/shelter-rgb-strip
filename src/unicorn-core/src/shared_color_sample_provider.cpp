@@ -15,7 +15,7 @@ SharedColorSampleProvider::SamplingResult SharedColorSampleProvider::NextSample(
     return original_->NextSample();
 }
 
-void SharedColorSampleProvider::Process(unsigned int deltaMs)
+void SharedColorSampleProvider::Process(uint32_t deltaMs)
 {
     if (!original_)
     {

@@ -18,7 +18,7 @@ namespace Unicorn { namespace Core
 
     private:
         SamplingResult NextSample() override;
-        void Process(unsigned int deltaMs) override;
+        void Process(uint32_t deltaMs) override;
 
     private:
         std::shared_ptr<Model::IColorSampleProvider> original_;

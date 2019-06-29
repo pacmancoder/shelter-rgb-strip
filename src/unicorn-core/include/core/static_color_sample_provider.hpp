@@ -13,7 +13,7 @@ namespace Unicorn { namespace Core
 
     public:
         SamplingResult NextSample() override;
-        void Process(unsigned int deltaMs) override;
+        void Process(uint32_t deltaMs) override;
 
     public:
         /// Changes target sample to render

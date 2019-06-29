@@ -2,7 +2,9 @@ set(
     COMPONENT_SRCS
     src/static_color_sample_provider.cpp
     src/shared_color_sample_provider.cpp
-    src/Renderer.cpp
+    src/spectrum_color_sample_provider.cpp
+    src/breathing_color_sample_provider.cpp
+    src/renderer.cpp
 )
 
 set(

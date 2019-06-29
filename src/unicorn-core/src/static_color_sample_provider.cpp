@@ -11,7 +11,7 @@ IColorSampleProvider::SamplingResult StaticColorSampleProvider::NextSample()
     return SamplingResult::make_some(sample_);
 }
 
-void StaticColorSampleProvider::Process(unsigned int deltaMs) {}
+void StaticColorSampleProvider::Process(uint32_t deltaMs) {}
 
 void StaticColorSampleProvider::SetSample(ColorSample sample)
 {
