@@ -40,11 +40,13 @@ extern "C" void app_main()
     for(;;)
     {
         brightness = std::abs((((step) % 256) - 128) / 128.0f);
-        auto color = Colors::RgbFloatNormalized(Colors::HsvFloatNormalized {
+        auto color = Colors::convert<Colors::RgbFloatNormalized>(
+            Colors::HsvFloatNormalized {
                 float(step % 360) / 360.0f,
                 1.0,
                 brightness / 4
-        });
+            }
+        );
 
         pwm_set_duty(0, static_cast<uint32_t>(PWM_PERIOD * color.r));
         pwm_set_duty(1, static_cast<uint32_t>(PWM_PERIOD * color.g));

@@ -40,17 +40,12 @@ namespace Colors
     struct Rgb<RgbVariant::FloatNormalized>
     {
         float r, g, b;
-
-        explicit operator Rgb<RgbVariant::Int24Bit>();
     };
 
     template<>
     struct Hsv<HsvVariant::FloatNormalized>
     {
         float h, s, v;
-
-        explicit operator Rgb<RgbVariant::FloatNormalized>();
-        explicit operator Rgb<RgbVariant::Int24Bit>();
     };
 
     // >>> ALIASES <<<
@@ -60,4 +55,17 @@ namespace Colors
 
     using HsvFloatNormalized = Hsv<HsvVariant::FloatNormalized>;
 
+    // >>> Operations <<<
+
+    template<typename Target, typename Source>
+    Target convert(Source source);
+
+    template<>
+    RgbFloatNormalized convert(HsvFloatNormalized source);
+
+    template<>
+    RgbInt24Bit convert(HsvFloatNormalized source);
+
+    template<>
+    RgbInt24Bit convert(RgbFloatNormalized source);
 }

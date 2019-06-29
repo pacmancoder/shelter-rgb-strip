@@ -1,0 +1,3 @@
+[submodule "src/libexl/exl"]
+	path = src/libexl/exl
+	url = https://github.com/pacmancoder/exl.git

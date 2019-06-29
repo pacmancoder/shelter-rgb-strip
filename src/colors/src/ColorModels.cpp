@@ -2,20 +2,21 @@
 
 using namespace Colors;
 
-Rgb<RgbVariant::FloatNormalized>::operator Rgb<RgbVariant::Int24Bit>()
+template<>
+RgbInt24Bit Colors::convert(RgbFloatNormalized source)
 {
     return
     {
-        static_cast<uint8_t>(r * 255),
-        static_cast<uint8_t>(g * 255),
-        static_cast<uint8_t>(b * 255)
+            static_cast<uint8_t>(source.r * 255),
+            static_cast<uint8_t>(source.g * 255),
+            static_cast<uint8_t>(source.b * 255)
     };
 }
 
-
-Hsv<HsvVariant::FloatNormalized>::operator Rgb<RgbVariant::FloatNormalized>()
+template<>
+RgbFloatNormalized Colors::convert(HsvFloatNormalized source)
 {
-    auto fSector = h * 6;
+    auto fSector = source.h * 6;
     if (fSector >= 6)
     {
         fSector = 0;
@@ -25,24 +26,25 @@ Hsv<HsvVariant::FloatNormalized>::operator Rgb<RgbVariant::FloatNormalized>()
 
     auto sectorPos = fSector - iSector;
 
-    float p = v * (1.0f - s);
-    float q = v * (1.0f - (s * sectorPos));
-    float t = v * (1.0f - (s * (1.0f - sectorPos)));
+    float p = source.v * (1.0f - source.s);
+    float q = source.v * (1.0f - (source.s * sectorPos));
+    float t = source.v * (1.0f - (source.s * (1.0f - sectorPos)));
 
     switch(iSector)
     {
-        case 0: return { v, t, p };
-        case 1: return { q, v, p };
-        case 2: return { p, v, t };
-        case 3: return { p, q, v };
-        case 4: return { t, p, v };
+        case 0: return { source.v, t, p };
+        case 1: return { q, source.v, p };
+        case 2: return { p, source.v, t };
+        case 3: return { p, q, source.v };
+        case 4: return { t, p, source.v };
         default: break;
     }
 
-    return { v, p, q };
+    return { source.v, p, q };
 }
 
-Hsv<HsvVariant::FloatNormalized>::operator Rgb<RgbVariant::Int24Bit>()
+template<>
+RgbInt24Bit Colors::convert(HsvFloatNormalized source)
 {
-    return static_cast<RgbInt24Bit>(static_cast<RgbFloatNormalized>(*this));
+    return convert<RgbInt24Bit>(convert<RgbFloatNormalized>(source));
 }
