@@ -94,12 +94,12 @@ EventManager::EventHandle EventManager::RegisterWifiStaStartEvent(
 {
     return impl_->AddEvent(
         SYSTEM_EVENT_STA_START,
-        Event{
+        Event {
             userContext,
             [callback = std::move(callback)](system_event_info_t&, void* userData)
             {
                 auto* event = reinterpret_cast<Event*>(userData);
-                callback(WifiStaStartContext{}, event->userContext);
+                callback(WifiStaStartContext {}, event->userContext);
             }
         }
     );
@@ -112,13 +112,13 @@ EventManager::EventHandle EventManager::RegisterWifiStaGotIp(
 {
     return impl_->AddEvent(
         SYSTEM_EVENT_STA_GOT_IP,
-        Event{
+        Event {
             userContext,
             [callback = std::move(callback)](system_event_info_t& info, void* userData)
             {
                 auto* event = reinterpret_cast<Event*>(userData);
                 callback(
-                    WifiStaGotIpContext{
+                    WifiStaGotIpContext {
                         Ip(info.got_ip.ip_info.ip.addr),
                         Ip(info.got_ip.ip_info.netmask.addr),
                     },
@@ -136,13 +136,13 @@ EventManager::EventHandle EventManager::RegisterWifiStaDisconnect(
 {
     return impl_->AddEvent(
         SYSTEM_EVENT_STA_DISCONNECTED,
-        Event{
+        Event {
             userContext,
             [callback = std::move(callback)](system_event_info_t& info, void* userData)
             {
                 auto* event = reinterpret_cast<Event*>(userData);
                 callback(
-                    WifiStaDisconnectedContext{
+                    WifiStaDisconnectedContext {
                         static_cast<WifiDisconnectReason>(info.disconnected.reason)
                     },
                     event->userContext
@@ -159,13 +159,13 @@ EventManager::EventHandle EventManager::RegisterWifiApStart(
 {
     return impl_->AddEvent(
         SYSTEM_EVENT_AP_START,
-        Event{
+        Event {
             userContext,
             [callback = std::move(callback)](system_event_info_t&, void* userData)
             {
                 auto* event = reinterpret_cast<Event*>(userData);
                 callback(
-                    WifiApStartContext{},
+                    WifiApStartContext {},
                     event->userContext
                 );
             }

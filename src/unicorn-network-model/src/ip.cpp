@@ -34,7 +34,7 @@ uint32_t Ip::ToInteger() const
 
 Ip::IpStringArray Ip::ToString() const
 {
-    IpStringArray buffer = {{0}};
+    IpStringArray buffer = {{ 0 }};
     snprintf(
         buffer.data(),
         buffer.size(),

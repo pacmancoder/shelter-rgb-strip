@@ -20,4 +20,4 @@ set(
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
-project(shelter_rgb_strip)
+project(shelter-unicorn)

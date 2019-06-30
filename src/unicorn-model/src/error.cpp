@@ -11,11 +11,17 @@ Error::Error(std::string&& description)
 const char* Error::GetDescription()
 {
     return description_.map<const char*>(
-        exl::when_exact<CString>([](const CString& value) {
-            return value.value;
-        }),
-        exl::when_exact<std::string>([](const std::string& value) {
-            return value.c_str();
-        })
+        exl::when_exact<CString>(
+            [](const CString& value)
+            {
+                return value.value;
+            }
+        ),
+        exl::when_exact<std::string>(
+            [](const std::string& value)
+            {
+                return value.c_str();
+            }
+        )
     );
 }

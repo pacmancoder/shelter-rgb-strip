@@ -34,14 +34,14 @@ extern "C" void app_main()
 
     auto breathingSampleGenerator = std::make_shared<Core::BreathingColorSampleProvider>(
         0.25f,
-        Colors::RgbInt24Bit{ 255, 16, 255 }
+        Colors::RgbInt24Bit { 255, 16, 255 }
     );
 
     sharedSampleProvider->SubstituteOriginal(breathingSampleGenerator);
 
     Unithread::Thread::SleepMs(5000);
 
-    breathingSampleGenerator->SetColor(Colors::RgbInt24Bit{ 32, 255, 64 });
+    breathingSampleGenerator->SetColor(Colors::RgbInt24Bit { 32, 255, 64 });
     breathingSampleGenerator->SetSpeed(1.f);
 
     Unithread::Thread::SleepMs(5000);

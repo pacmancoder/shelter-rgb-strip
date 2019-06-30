@@ -10,7 +10,7 @@ SpectrumColorSampleProvider::SpectrumColorSampleProvider(float speed)
 SpectrumColorSampleProvider::SamplingResult SpectrumColorSampleProvider::NextSample()
 {
     return Colors::convert<Colors::RgbInt24Bit>(
-        Colors::HsvFloatNormalized{ float(step_ % 1000) / 1000.f, 1.0, 1.0 }
+        Colors::HsvFloatNormalized { float(step_ % 1000) / 1000.f, 1.0, 1.0 }
     );
 }
 
