@@ -11,17 +11,7 @@
 #include <core/shared_color_sample_provider.hpp>
 #include <core/spectrum_color_sample_provider.hpp>
 #include <core/breathing_color_sample_provider.hpp>
-
-/*
- *         brightness = std::abs((((step) % 256) - 128) / 128.0f);
-        auto color = Colors::convert<Colors::RgbFloatNormalized>(
-            Colors::HsvFloatNormalized{
-                float(step % 360) / 360.0f,
-                1.0,
-                brightness / 4
-            }
-        );
- */
+#include <core/static_color_sample_provider.hpp>
 
 using namespace Unicorn;
 
@@ -34,6 +24,7 @@ extern "C" void app_main()
 {
     auto& device = Hal::Device::GetInstance();
     device.Init();
+    device.GetWifi()->StartOpenAp();
 
     auto sharedSampleProvider = std::make_shared<Core::SharedColorSampleProvider>();
 
@@ -43,7 +34,7 @@ extern "C" void app_main()
 
     auto breathingSampleGenerator = std::make_shared<Core::BreathingColorSampleProvider>(
         0.25f,
-        Colors::RgbInt24Bit {255, 16, 255}
+        Colors::RgbInt24Bit{ 255, 16, 255 }
     );
 
     sharedSampleProvider->SubstituteOriginal(breathingSampleGenerator);
@@ -55,11 +46,11 @@ extern "C" void app_main()
 
     Unithread::Thread::SleepMs(5000);
 
-    sharedSampleProvider->SubstituteOriginal(std::make_shared<Core::SpectrumColorSampleProvider>(
-        0.25f
-    ));
+    sharedSampleProvider->SubstituteOriginal(
+        std::make_shared<Core::SpectrumColorSampleProvider>(
+            0.25f
+        ));
 
     auto rng = device.GetRng();
     std::uniform_int_distribution<uint8_t> colorGenerator(0, 255);
-
 }

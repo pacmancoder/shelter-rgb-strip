@@ -10,6 +10,7 @@ set(
     # Universal components
     src/unithread
     # Core components
+    src/unicorn-network-model
     src/unicorn-hal
     src/unicorn-colors
     src/unicorn-model
