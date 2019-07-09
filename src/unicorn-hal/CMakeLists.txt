@@ -19,6 +19,8 @@ set(
     nvs_flash
     unicorn-network-model
     unithread
+
+    shelter-core-component
 )
 
 register_component()

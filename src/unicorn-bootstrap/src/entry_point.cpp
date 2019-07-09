@@ -13,6 +13,8 @@
 #include <core/breathing_color_sample_provider.hpp>
 #include <core/static_color_sample_provider.hpp>
 
+#include <shelter-utils/ssid_device_descriptor.hpp>
+
 using namespace Unicorn;
 
 namespace
@@ -24,7 +26,16 @@ extern "C" void app_main()
 {
     auto& device = Hal::Device::GetInstance();
     device.Init();
-    device.GetWifi()->StartOpenAp();
+
+    device.GetWifi()->StartOpenAp(
+        Shelter::Utils::EncodeDeviceDescriptorToSsid(Shelter::Model::DeviceDescriptor {
+            Shelter::Model::ShelterVersion(1, 0, 0),
+            Shelter::Model::Service(Shelter::Model::Service::Id::ConfigureSta),
+            Shelter::Model::DeviceClass(Shelter::Model::DeviceClass::Id::RgbLedStrip),
+            Shelter::Model::DeviceVendor(Shelter::Model::DeviceVendor::Id::IndividualPacmancoder),
+            Shelter::Model::DeviceSerial(0x1122334455667788),
+        }
+    ));
 
     auto sharedSampleProvider = std::make_shared<Core::SharedColorSampleProvider>();
 

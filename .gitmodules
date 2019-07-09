@@ -1,3 +1,6 @@
 [submodule "src/libexl/exl"]
 	path = src/libexl/exl
 	url = https://github.com/pacmancoder/exl.git
+[submodule "src/libshelter-core/shelter-core"]
+	path = src/libshelter-core/shelter-core
+	url = http://github.com/pacmancoder/shelter-core

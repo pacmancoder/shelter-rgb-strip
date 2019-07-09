@@ -7,6 +7,7 @@ set(
     EXTRA_COMPONENT_DIRS
     # Third party library components
     src/libexl/exl-component
+    src/libshelter-core/shelter-core-component
     # Universal components
     src/unithread
     # Core components

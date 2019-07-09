@@ -1,5 +1,7 @@
 #pragma once
 
+#include <shelter-utils/ssid_device_descriptor.hpp>
+
 namespace Unicorn { namespace Hal
 {
     class Wifi
@@ -8,6 +10,6 @@ namespace Unicorn { namespace Hal
         Wifi();
 
     public:
-        void StartOpenAp();
+        void StartOpenAp(Shelter::Utils::Ssid ssid);
     };
 }}

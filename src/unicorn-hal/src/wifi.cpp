@@ -8,34 +8,14 @@
 
 #include <esp_wifi.h>
 
-namespace
-{
-    std::string ToHex(long value)
-    {
-        char buffer[32] = {};
-        snprintf(buffer, sizeof(buffer), "%08lX", value);
-
-        return buffer;
-    }
-
-    const std::string GetUniqueSsid()
-    {
-        static const auto hashedSeed = std::hash<std::string>()(__TIMESTAMP__);
-        static const auto ssid = "[Shelter] Unicorn " + ToHex((long) hashedSeed);
-        return ssid;
-    }
-}
-
 Unicorn::Hal::Wifi::Wifi()
 {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 }
 
-void Unicorn::Hal::Wifi::StartOpenAp()
+void Unicorn::Hal::Wifi::StartOpenAp(Shelter::Utils::Ssid ssid)
 {
-    const auto& ssid = GetUniqueSsid();
-
     wifi_config_t config = {};
     std::copy(ssid.begin(), ssid.end(), config.ap.ssid);
     config.ap.ssid_len = ssid.size();
