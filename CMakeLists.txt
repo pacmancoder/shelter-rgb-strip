@@ -1,23 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_CXX_STANDARD 14)
-
-# ESP8266 IDF initialization
 set(
-    EXTRA_COMPONENT_DIRS
-    # Third party library components
-    src/libexl/exl-component
-    src/libshelter-core/shelter-core-component
-    # Universal components
-    src/unithread
-    # Core components
-    src/unicorn-network-model
-    src/unicorn-hal
-    src/unicorn-colors
-    src/unicorn-model
-    src/unicorn-core
-    src/unicorn-bootstrap
+    FIRMWARE_LIB
+    "${CMAKE_CURRENT_SOURCE_DIR}/firmware/target/xtensa-esp8266-none-elf/release/libfirmware.a"
 )
+
+set(EXTRA_COMPONENT_DIRS "idf-shim")
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 

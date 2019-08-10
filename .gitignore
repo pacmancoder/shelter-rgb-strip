@@ -1,4 +1,10 @@
+# Exclude from the root folder
+/build/
+/firmware/target/
+
+# Exclude all matched folders
 cmake-build-*/
 .idea/
-build/
+
+# Exclude all matched files
 sdkconfig.old
