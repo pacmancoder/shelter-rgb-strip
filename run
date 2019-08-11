@@ -38,7 +38,7 @@ function run_rust_build()
 
     print_stage "Building rust code..."
 
-    export RUSTFLAGS="-C linker="$LINKER_PATH" -C save-temps"
+    export RUSTFLAGS="-C linker="$LINKER_PATH" --emit llvm-bc,link"
 
     cd firmware
     xargo build --target xtensa-esp8266-none-elf --release
